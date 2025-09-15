@@ -1,0 +1,13 @@
+.para {
+    margin: 50px;
+    height: 200px;
+    width: 400px;
+    border: 2px solid black;   /* box ka background blue */
+    color: white;             /* text ka color white */
+}
+
+#pa {
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+}
