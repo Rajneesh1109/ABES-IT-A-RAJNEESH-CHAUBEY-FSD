@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Piano</title>
+  <style>
+    body{display:flex;justify-content:center;align-items:center;height:100vh;background:#222;margin:0}
+    .piano{display:flex}
+    .key{width:60px;height:200px;border:1px solid #000;background:#fff;position:relative;}
+    .key.black{width:40px;height:120px;background:#000;position:absolute;margin-left:-20px;z-index:2}
+    .key:active{background:#ddd}
+    .black:active{background:#444}
+  </style>
+</head>
+<body>
+  <div class="piano">
+    <div class="key" data-note="C"></div>
+    <div class="key" data-note="D"></div>
+    <div class="key" data-note="E"></div>
+    <div class="key" data-note="F"></div>
+    <div class="key" data-note="G"></div>
+    <div class="key" data-note="A"></div>
+    <div class="key" data-note="B"></div>
+  </div>
+
+  <script>
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    function play(note){
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.type="sine";
+      const freqs={C:261.63,D:293.66,E:329.63,F:349.23,G:392.00,A:440.00,B:493.88};
+      osc.frequency.value=freqs[note];
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+1);
+      osc.stop(ctx.currentTime+1);
+    }
+    document.querySelectorAll('.key').forEach(k=>{
+      k.onmousedown=()=>play(k.dataset.note);
+    });
+  </script>
+</body>
+</html>
